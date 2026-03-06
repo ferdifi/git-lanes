@@ -19,7 +19,7 @@ import { checkConflicts, formatConflictReport, suggestResolutions } from "./conf
 import { runSessionTests, runCombinedTests } from "./test-runner.ts";
 import { createPullRequest, type ForgeType } from "./forge/github.ts";
 import { installHooks, uninstallHooks } from "./hooks/install.ts";
-import { getRepoRoot, isInsideGitRepo, diff, status } from "./git.ts";
+import { getRepoRoot, isInsideGitRepo } from "./git.ts";
 import { loadConfig } from "./config.ts";
 import * as log from "./utils/logger.ts";
 

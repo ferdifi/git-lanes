@@ -1,7 +1,6 @@
-import { getRepoRoot, getChangedFiles, getDefaultBranch, diffFiles, gitSafe } from "./git.ts";
+import { getRepoRoot, getChangedFiles, getDefaultBranch, gitSafe } from "./git.ts";
 import { loadAllManifests, getAllChangedFiles, type SessionManifest } from "./manifest.ts";
 import { resolveSession } from "./session.ts";
-import * as log from "./utils/logger.ts";
 
 export interface ConflictReport {
   currentSession: string;

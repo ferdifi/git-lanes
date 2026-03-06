@@ -1,6 +1,5 @@
 import { spawnSync } from "bun";
 import { getDefaultBranch, getRepoRoot } from "../git.ts";
-import * as log from "../utils/logger.ts";
 
 export type ForgeType = "github" | "gitlab" | "bitbucket";
 
@@ -89,23 +88,12 @@ function createBitbucketPR(
   body: string | undefined,
   cwd: string,
 ): string {
-  // Bitbucket doesn't have a widely used official CLI
-  // Fall back to using the API via curl
-  const args = [
-    "api", "rest",
-    "-m", "POST",
-    "-e", "pull-requests",
-    "-H", "Content-Type: application/json",
-    "-d", JSON.stringify({
-      title,
-      description: body ?? "",
-      source: { branch: { name: branch } },
-      destination: { branch: { name: baseBranch } },
-    }),
-  ];
-
   // Try 'bb' CLI first
-  const result = spawnSync(["bb", "pr", "create", "--source", branch, "--dest", baseBranch, "--title", title], {
+  const args = ["bb", "pr", "create", "--source", branch, "--dest", baseBranch, "--title", title];
+  if (body) {
+    args.push("--body", body);
+  }
+  const result = spawnSync(args, {
     cwd,
     stdout: "pipe",
     stderr: "pipe",

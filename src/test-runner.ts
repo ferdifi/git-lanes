@@ -7,7 +7,6 @@ import {
   addWorktreeDetached,
   removeWorktree,
   gitSafe,
-  merge as gitMerge,
 } from "./git.ts";
 import { resolveSession } from "./session.ts";
 import { loadAllManifests } from "./manifest.ts";

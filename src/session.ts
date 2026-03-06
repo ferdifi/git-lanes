@@ -11,16 +11,13 @@ import {
   deleteBranch,
   addWorktree,
   removeWorktree,
-  listWorktrees,
   pruneWorktrees,
   add,
   commit as gitCommit,
   resetSoft,
   hasUncommittedChanges,
-  getChangedFiles,
   status,
   diff,
-  diffFiles,
   merge as gitMerge,
   pushWithUpstream,
   branchExists,
@@ -30,7 +27,6 @@ import {
   loadManifest,
   saveManifest,
   deleteManifest,
-  listManifests,
   loadAllManifests,
   addChangeset,
   removeLastChangeset,
@@ -39,7 +35,7 @@ import {
   type SessionManifest,
   type Changeset,
 } from "./manifest.ts";
-import { loadConfig, type LanesConfig } from "./config.ts";
+import { loadConfig } from "./config.ts";
 import { validateSessionName, validateCommitMessage, validateFilePaths } from "./utils/validation.ts";
 import * as log from "./utils/logger.ts";
 
@@ -374,7 +370,6 @@ export function squashSession(
   cwd?: string,
 ): void {
   const repoRoot = getRepoRoot(cwd);
-  const config = loadConfig(repoRoot);
   const manifest = resolveSession(sessionName, cwd);
 
   if (!manifest) {
@@ -518,7 +513,6 @@ export function whichSession(cwd?: string): SessionInfo | null {
  */
 export function pruneSessions(cwd?: string): { removed: string[] } {
   const repoRoot = getRepoRoot(cwd);
-  const config = loadConfig(repoRoot);
   const removed: string[] = [];
 
   // Prune git worktrees

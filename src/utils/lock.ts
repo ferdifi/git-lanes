@@ -1,5 +1,4 @@
 import { existsSync, mkdirSync, unlinkSync, writeFileSync, readFileSync } from "fs";
-import { dirname } from "path";
 
 const LOCK_STALE_MS = 30_000; // 30 seconds
 
