@@ -1,0 +1,33 @@
+name: Documentation Improvement
+description: Suggest improvements to documentation
+labels: ["documentation"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What needs improvement?
+      placeholder: Which documentation is unclear, missing, or incorrect?
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested improvement
+      placeholder: How should the documentation be changed?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: doc-type
+    attributes:
+      label: Documentation type
+      options:
+        - README
+        - CONTRIBUTING
+        - ARCHITECTURE
+        - API Reference
+        - CLI Help Text
+        - Other
+    validations:
+      required: true
