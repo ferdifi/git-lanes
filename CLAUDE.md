@@ -1,106 +1,57 @@
+# git-lanes
 
-Default to using Bun instead of Node.js.
+Parallel AI agent isolation for Git repositories. Built with Bun + TypeScript, zero runtime dependencies.
 
-- Use `bun <file>` instead of `node <file>` or `ts-node <file>`
-- Use `bun test` instead of `jest` or `vitest`
-- Use `bun build <file.html|file.ts|file.css>` instead of `webpack` or `esbuild`
-- Use `bun install` instead of `npm install` or `yarn install` or `pnpm install`
-- Use `bun run <script>` instead of `npm run <script>` or `yarn run <script>` or `pnpm run <script>`
-- Use `bunx <package> <command>` instead of `npx <package> <command>`
-- Bun automatically loads .env, so don't use dotenv.
+## Build & Test
 
-## APIs
-
-- `Bun.serve()` supports WebSockets, HTTPS, and routes. Don't use `express`.
-- `bun:sqlite` for SQLite. Don't use `better-sqlite3`.
-- `Bun.redis` for Redis. Don't use `ioredis`.
-- `Bun.sql` for Postgres. Don't use `pg` or `postgres.js`.
-- `WebSocket` is built-in. Don't use `ws`.
-- Prefer `Bun.file` over `node:fs`'s readFile/writeFile
-- Bun.$`ls` instead of execa.
-
-## Testing
-
-Use `bun test` to run tests.
-
-```ts#index.test.ts
-import { test, expect } from "bun:test";
-
-test("hello world", () => {
-  expect(1).toBe(1);
-});
+```bash
+bun install          # Install dev dependencies
+bun run build        # Build to dist/
+bun test             # Run all tests
+bun run lint         # Type check
 ```
 
-## Frontend
-
-Use HTML imports with `Bun.serve()`. Don't use `vite`. HTML imports fully support React, CSS, Tailwind.
-
-Server:
-
-```ts#index.ts
-import index from "./index.html"
-
-Bun.serve({
-  routes: {
-    "/": index,
-    "/api/users/:id": {
-      GET: (req) => {
-        return new Response(JSON.stringify({ id: req.params.id }));
-      },
-    },
-  },
-  // optional websocket support
-  websocket: {
-    open: (ws) => {
-      ws.send("Hello, world!");
-    },
-    message: (ws, message) => {
-      ws.send(message);
-    },
-    close: (ws) => {
-      // handle close
-    }
-  },
-  development: {
-    hmr: true,
-    console: true,
-  }
-})
+Test suites:
+```bash
+bun test test/unit          # Unit tests
+bun test test/integration   # Integration tests
+bun test test/security      # Security tests
+bun test test/e2e           # CLI end-to-end tests
+bun test test/stress        # Concurrency stress tests
 ```
 
-HTML files can import .tsx, .jsx or .js files directly and Bun's bundler will transpile & bundle automatically. `<link>` tags can point to stylesheets and Bun's CSS bundler will bundle.
+## Source Files
 
-```html#index.html
-<html>
-  <body>
-    <h1>Hello, world!</h1>
-    <script type="module" src="./frontend.tsx"></script>
-  </body>
-</html>
-```
+| File | Purpose |
+|------|---------|
+| `src/cli.ts` | CLI entry point, command dispatch, argument parsing |
+| `src/config.ts` | `.lanes.json` configuration loader with defaults |
+| `src/session.ts` | Session lifecycle: start, end, abort, track, commit, undo, squash, merge |
+| `src/manifest.ts` | Session manifest (JSON) management with atomic writes and locking |
+| `src/git.ts` | Git command wrappers using `Bun.spawnSync()` with array args |
+| `src/conflicts.ts` | Cross-session conflict detection with resolution suggestions |
+| `src/test-runner.ts` | Test execution in isolated worktrees with auto-detection |
+| `src/hooks/install.ts` | Hook installation for Claude Code, Cursor, Aider |
+| `src/forge/github.ts` | PR/MR creation for GitHub, GitLab, Bitbucket |
+| `src/utils/validation.ts` | Input validation (session names, paths, messages) |
+| `src/utils/lock.ts` | File locking via mkdir atomicity with stale detection |
+| `src/utils/logger.ts` | Colored console logging |
 
-With the following `frontend.tsx`:
+## Coding Rules
 
-```tsx#frontend.tsx
-import React from "react";
-import { createRoot } from "react-dom/client";
+1. **Always use `spawnSync` with argument arrays** — never string interpolation (prevents injection)
+2. **Use `getGitCommonDir()` / `getRepoRoot()`** — never hardcode `.git` paths
+3. **Use `saveManifest()`** — ensures atomic writes with file locking
+4. **Session name regex**: `^[a-zA-Z0-9][a-zA-Z0-9._-]*$`
+5. **Zero runtime dependencies** — only Bun/Node built-in modules
+6. **Always load config** via `loadConfig(repoRoot)`
+7. **Use Bun APIs**: `Bun.file()`, `Bun.write()`, `Bun.spawn()` over Node equivalents
 
-// import .css files directly and it works
-import './index.css';
+## Key Concepts
 
-const root = createRoot(document.body);
-
-export default function Frontend() {
-  return <h1>Hello, world!</h1>;
-}
-
-root.render(<Frontend />);
-```
-
-Then, run index.ts
-
-```sh
-bun --hot ./index.ts
-```
-
-For more information, read the Bun API docs in `node_modules/bun-types/docs/**.mdx`.
+- **Session**: Isolated workspace = Git branch + worktree + manifest
+- **Manifest**: JSON metadata in `.git/lanes-manifests/` tracking changesets and pending files
+- **Changeset**: A recorded commit within a session (SHA, message, files, timestamp)
+- **Session resolution**: Priority chain: explicit flag > worktree > single > PPID
+- **Conflict**: File overlap between two active sessions
+- **Forge**: Platform for PR creation (GitHub, GitLab, Bitbucket)
