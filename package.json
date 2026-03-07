@@ -1,6 +1,6 @@
 {
   "name": "git-lanes",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Parallel AI agent isolation for Git repositories",
   "type": "module",
   "bin": {
