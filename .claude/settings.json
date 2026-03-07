@@ -1,0 +1,19 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "command": ".claude/hooks/git-lanes-pre-tool"
+      }
+    ],
+    "Stop": [
+      {
+        "command": ".claude/hooks/git-lanes-stop"
+      }
+    ],
+    "PostToolUse": [
+      {
+        "command": ".claude/hooks/git-lanes-post-tool"
+      }
+    ]
+  }
+}

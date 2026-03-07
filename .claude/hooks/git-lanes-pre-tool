@@ -1,0 +1,17 @@
+#!/bin/bash
+# git-lanes PreToolUse hook for Claude Code
+# Ensures a session is active before file modifications
+
+TOOL_NAME="$1"
+
+# Only intercept file-writing tools
+case "$TOOL_NAME" in
+  Write|Edit|MultiEdit)
+    # Check if a lanes session is active
+    if ! git lanes which > /dev/null 2>&1; then
+      echo "Warning: No git-lanes session active. Start one with 'git lanes start <name>'"
+    fi
+    ;;
+esac
+
+exit 0

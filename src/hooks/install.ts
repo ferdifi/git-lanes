@@ -121,6 +121,23 @@ esac
 
 exit 0
 `,
+      "git-lanes-post-tool": `#!/bin/bash
+# git-lanes PostToolUse hook for Claude Code
+# Auto-tracks files after Write/Edit operations
+
+TOOL_NAME="$1"
+FILE_PATH="$2"
+
+case "$TOOL_NAME" in
+  Write|Edit|MultiEdit)
+    if [ -n "$FILE_PATH" ] && git lanes which > /dev/null 2>&1; then
+      git lanes track "$FILE_PATH" 2>/dev/null || true
+    fi
+    ;;
+esac
+
+exit 0
+`,
       "git-lanes-stop": `#!/bin/bash
 # git-lanes Stop hook for Claude Code
 # Auto-commits pending work when the session ends
@@ -146,6 +163,7 @@ exit 0
     configContent: JSON.stringify({
       hooks: {
         PreToolUse: [{ command: ".claude/hooks/git-lanes-pre-tool" }],
+        PostToolUse: [{ command: ".claude/hooks/git-lanes-post-tool" }],
         Stop: [{ command: ".claude/hooks/git-lanes-stop" }],
       },
     }, null, 2),
