@@ -169,7 +169,22 @@ Create a `.lanes.json` file in your repository root:
 git lanes install-hooks --adapter claude-code
 ```
 
-Installs PreToolUse and Stop hooks that automatically track file changes and checkpoint work.
+Installs three hooks that fully automate the git-lanes workflow:
+
+| Hook | Trigger | What it does |
+|------|---------|--------------|
+| `PreToolUse` | Before Write/Edit | Warns if no session is active |
+| `PostToolUse` | After Write/Edit | Auto-tracks modified files |
+| `Stop` | Claude Code exits | Auto-commits pending work as WIP |
+
+Once installed, Claude Code will automatically track every file it touches. You just need to start a session:
+
+```bash
+git lanes start my-feature
+# Claude Code works — files are auto-tracked
+# When Claude exits, uncommitted changes are saved as WIP
+git lanes merge
+```
 
 ### Cursor
 
